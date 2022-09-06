@@ -1,0 +1,29 @@
+service: my-service
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  stage: dev
+  runtime: python3.6
+  region: us-west-2
+  project: my-project
+
+# needs more granular excluding in production as only the serverless provider npm
+# package should be excluded (and not the whole node_modules directory)
+package:
+  exclude:
+    - node_modules/**
+    - .gitignore
+    - .git/**
+
+functions:
+  first:
+    handler: handler.hello
+    events:
+      - http:
+          path: /
+          method: get
+
+plugins:
+  - serverless-offline
